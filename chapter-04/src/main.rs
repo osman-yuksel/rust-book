@@ -61,6 +61,12 @@ fn main() {
         // print!("{}", s2); // error 
         println!("{}", s3); // new owner of s2
     }
+
+    {
+        let s1 = String::from("hello");
+        let (s2, len) = calculate_length(s1);
+        println!("The length of '{}' is {}.", s2, len);
+    }
     
 }
 
@@ -84,4 +90,10 @@ fn gives_ownership() -> String {
 // a_string comes into scope
 fn takes_and_gives_back(a_string: String) -> String { 
     a_string  // a_string is returned and moves out to the calling function
+}
+
+fn calculate_length(s: String) -> (String, usize) {
+    let length = s.len(); // len() returns the length of a String
+
+    (s, length)
 }

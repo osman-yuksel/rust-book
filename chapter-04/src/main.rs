@@ -108,6 +108,20 @@ fn main() {
         println!("{}", r3);
     }
     
+    {
+        let reference_to_nothing = dangle();
+        //this function's return type contains a borrowed value, but there is no value for it to be borrowed from
+        // fn dangle() -> &String {
+        //     let s = String::from("hello");
+        //     &s
+        // }
+
+        fn dangle() -> String {
+            let s = String::from("hello");s
+        }
+        println!("{}", reference_to_nothing);
+    }
+    
 }
 
 // some_string comes into scope

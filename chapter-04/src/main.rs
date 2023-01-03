@@ -17,7 +17,8 @@ fn main() {
         let s1 = String::from("hello");
         let s2 = s1;
         let s3 = s2.clone(); 
-    
+        
+        //<----------------------------------->
         //println!("{}, world!", s1); // error
         println!("{}, world!", s2);
         println!("{}, world!", s3); // no error
@@ -36,14 +37,17 @@ fn main() {
     {
         // s comes into scope
         let s = String::from("hello");
-
         // s's value moves into the function and so is no longer valid here
         takes_ownership(s);
-    
+        //<------------------------>
+        //print!("{}", s); // error
+
+
         // x comes into scope
         let x = 5;
         // x would move into the function, but i32 is Copy, so it's okay to still use x afterward
         makes_copy(x);
+        print!("{}", x); // no error
     }
     
 }

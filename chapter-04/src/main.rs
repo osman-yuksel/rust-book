@@ -1,6 +1,10 @@
 // https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
-// https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html
+// https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html\
+// https://doc.rust-lang.org/book/ch04-03-slices.html
+#[allow(unused_variables)]
+#[allow(unused_mut)]
 fn main() {
+    
     {
         let mut s = String::from("hello"); // Creating a String from a string literal using the from function
     
@@ -75,7 +79,7 @@ fn main() {
         let s = String::from("hello");
 
         fn change(some_string: &String) {
-            //<------------------------------->
+            //<---------------------------------------->
             // some_string.push_str(", world"); // error
             println!("{}", some_string)
         }
@@ -110,18 +114,42 @@ fn main() {
     
     {
         let reference_to_nothing = dangle();
-        //this function's return type contains a borrowed value, but there is no value for it to be borrowed from
+        // <----------------------------------------------------------------------------------------------------->
+        // this function's return type contains a borrowed value, but there is no value for it to be borrowed from
         // fn dangle() -> &String {
         //     let s = String::from("hello");
         //     &s
         // }
 
         fn dangle() -> String {
-            let s = String::from("hello");s
+            let s = String::from("hello");
+            s
         }
         println!("{}", reference_to_nothing);
     }
+
+    {
+        let s = String::from("hello");
+
+        let len = s.len();
+
+        let slice = &s[3..len];
+        println!("{}", slice); //same output
+        
+        let slice = &s[3..];
+        println!("{}", slice); //same output
+    }
+
+    {
+        let mut s = String::from("hello world");
+
+        let word = first_word(&s);
+        // <------------------>
+        //s.clear(); // error!
     
+        println!("the first word is: {}", word);
+    }
+
 }
 
 // some_string comes into scope
@@ -155,3 +183,13 @@ fn calculate_length_noref(s: String) -> (String, usize) {
 fn calculate_length_ref(s: &String) -> usize {
     s.len()
 } // Here, s goes out of scope. But because it does not have ownership of what it refers to, it is not dropped
+
+fn first_word(s: &String) -> &str {
+    let bytes = s.as_bytes();
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+    &s[..]
+}

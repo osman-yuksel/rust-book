@@ -9,6 +9,14 @@ struct User {
     sign_in_count: u64,
 }
 
+fn build_user(email: String, username: String) -> User {
+    User {
+        email,
+        username,
+        active: true,
+        sign_in_count: 1,
+    }
+}
 struct Color(i32, i32, i32);
 struct Point(i32, i32, i32);
 
@@ -20,14 +28,27 @@ struct Rectangle {
     height: u32,
 }
 
-fn build_user(email: String, username: String) -> User {
-    User {
-        email,
-        username,
-        active: true,
-        sign_in_count: 1,
+fn perimeter(rectangle: &Rectangle) -> u32 {
+    2 * (rectangle.width + rectangle.height)
+}
+
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+
+    fn square(size: u32) -> Self {
+        Self {
+            width: size,
+            height: size,
+        }
     }
 }
+
 
 fn main() {
     let user1 = build_user(
@@ -50,7 +71,7 @@ fn main() {
     println!("{}, {}", black, origin);
 
     let rect1 = Rectangle {
-        width: 30,
+        width: 40,
         height: 60,
     };
     
@@ -61,11 +82,23 @@ fn main() {
     // Takes ownership of variable
     dbg!(&rect1);
 
-}
+    let rect2 = Rectangle {
+        width: 30,
+        height: 50,
+    };
 
+    let rect3 = Rectangle {
+        width: 60,
+        height: 45,
+    };
 
-fn perimeter(rectangle: &Rectangle) -> u32 {
-    2 * (rectangle.width + rectangle.height)
+    println!("{}", rect2.area());
+    println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
+    println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));
+
+    let rect4 = Rectangle::square(5);
+    println!("{:?}", rect4);
+
 }
 
 // println!() can't print these structs by default.

@@ -1,4 +1,5 @@
 // https://doc.rust-lang.org/book/ch05-01-defining-structs.html
+// https://doc.rust-lang.org/book/ch05-02-example-structs.html
 use std::fmt;
 
 struct User {
@@ -10,6 +11,14 @@ struct User {
 
 struct Color(i32, i32, i32);
 struct Point(i32, i32, i32);
+
+//Rust does include functionality to print out debugging information, but we have to explicitly opt in to make that functionality available for our struct.
+// To do that, we add the outer attribute #[derive(Debug)] just before the struct definition.
+#[derive(Debug)] 
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
 
 fn build_user(email: String, username: String) -> User {
     User {
@@ -39,6 +48,24 @@ fn main() {
     let origin = Point(0, 0, 0);
 
     println!("{}, {}", black, origin);
+
+    let rect1 = Rectangle {
+        width: 30,
+        height: 60,
+    };
+    
+    println!("{}", perimeter(&rect1));
+    
+    // Debug printing
+    println!("{:?}", rect1);
+    // Takes ownership of variable
+    dbg!(&rect1);
+
+}
+
+
+fn perimeter(rectangle: &Rectangle) -> u32 {
+    2 * (rectangle.width + rectangle.height)
 }
 
 // println!() can't print these structs by default.
